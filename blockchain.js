@@ -7,6 +7,18 @@ var Block = require('./block');
 var Transaction = require('./transaction');
 var HashList = require('./hashlist');
 var Pbft = require('./pbft');
+var colors = require('colors');
+
+colors.setTheme({
+    command: 'red',
+    Aaccept: 'grey',
+    Sslot: 'yellow',
+    Ffork: 'blue',
+    Pprepare: 'magenta',
+    Ccommit: 'green',
+
+});
+
 
 var COIN = 100000000;
 
@@ -169,14 +181,14 @@ BlockChain.prototype.makeFork_ = function() {
     recipient: 'bob',
     sender: 'cracker'
   }));
-  console.log('fork on node: %d, height: %d, fork1: %s, fork2: %s', this.node.id, lastBlock.getHeight() + 1, block1.getHash(), block2.getHash());
+  console.log('fork on node: %d, height: %d, fork1: %s, fork2: %s'.Ffork, this.node.id, lastBlock.getHeight() + 1, block1.getHash(), block2.getHash());
   var i = 0;
   for (var id in this.node.peers) {
     if (i++ % 2 === 0) {
-      console.log('send fork1 to', id);
+      console.log('send fork1 to'.Ffork, id);
       this.node.peers[id].send(protocol.blockMessage(block1.getData()));
     } else {
-      console.log('send fork2 to', id);
+      console.log('send fork2 to'.Ffork, id);
       this.node.peers[id].send(protocol.blockMessage(block2.getData()));
     }
   }
@@ -199,7 +211,7 @@ BlockChain.prototype.loop_ = function(cb) {
   if (this.node.id === delegateId) {
     if (!this.node.isBad) {
       var block = this.createBlock();
-      console.log('slot: %d, height: %d, nodeId: %d', currentSlot, block.getHeight(), this.node.id);
+      console.log('slot: %d, height: %d, nodeId: %d'.Sslot, currentSlot, block.getHeight(), this.node.id);
       this.addBlock(block);
       this.emit('new-message', protocol.blockMessage(block.getData()));
       this.lastSlot = currentSlot;
