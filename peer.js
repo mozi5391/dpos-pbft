@@ -1,6 +1,18 @@
 var assert = require('assert');
 var net = require('net');
 var protocol = require('./protocol');
+var colors = require('colors');
+
+colors.setTheme({
+    command: 'red',
+    Aaccept: 'grey',
+    Sslot: 'yellow',
+    Ffork: 'blue',
+    Pprepare: 'magenta',
+    Ccommit: 'green',
+
+});
+
 
 function Peer(id, port, localId) {
   this.buf = '';
@@ -42,7 +54,7 @@ Peer.prototype.close = function() {
 }
 
 Peer.prototype.onConnected_ = function() {
-  console.log('peer ' + this.id + ' connected with ' + this.localId);
+  console.log('peer '.Aaccept + this.id + ' connected with '.Aaccept + this.localId);
   this.socket.setEncoding('utf8');
   this.socket.on('data', this.onData_.bind(this));
   this.send(protocol.initMessage(this.localId));
@@ -64,7 +76,7 @@ Peer.prototype.onData_ = function(data) {
     var msg = JSON.parse(body);
     if (msg.type === protocol.MessageType.Init) {
       this.id = msg.id;
-      console.log('peer ' + this.id + ' accpeted on ' + this.localId);
+      console.log('peer '.Aaccept + this.id + ' accpeted on '.Aaccept + this.localId);
     }
     // console.log(this.localId + ' << ' + this.id, body);
     this.messageCb(this, msg);
