@@ -1,6 +1,17 @@
 var Node = require('./node');
 var async = require('async');
 var Flags = require('commander');
+var colors = require('colors');
+
+colors.setTheme({
+    command: 'red',
+    Aaccept: 'grey',
+    Sslot: 'yellow',
+    Ffork: 'blue',
+    Pprepare: 'magenta',
+    Ccommit: 'green',
+
+});
 
 var nodes = [];
 
@@ -22,21 +33,21 @@ function main() {
 
   async.series([
     function(next) {
-      console.log('step 1 init nodes ...');
+      console.log('step 1 init nodes ...'.command);
       for (var i = 0; i < 20; i++) {
         nodes[i] = new Node(i, badIds.indexOf(i) !== -1);
       }
       setTimeout(next, 1000);
     },
     function(next) {
-      console.log('step 2 init p2p network ...');
+      console.log('step 2 init p2p network ...'.command);
       for (var i in nodes) {
         nodes[i].connect();
       }
       setTimeout(next, 2000);
     },
     function(next) {
-      console.log('step 3 start forging');
+      console.log('step 3 start forging'.command);
       for (var i in nodes) {
         nodes[i].start();
       }
