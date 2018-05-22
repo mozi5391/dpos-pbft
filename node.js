@@ -4,6 +4,17 @@ var BlockChain = require('./blockchain');
 var protocol = require('./protocol');
 var Block = require('./block');
 var Transaction = require('./transaction');
+var colors = require('colors');
+
+colors.setTheme({
+    command: 'red',
+    Aaccept: 'grey',
+    Sslot: 'yellow',
+    Ffork: 'blue',
+    Pprepare: 'magenta',
+    Ccommit: 'green',
+
+});
 
 var PORT = 10000;
 
@@ -15,7 +26,7 @@ function Node(i, isBad) {
 
   this.server = net.createServer(this.onConnection_.bind(this));
   this.server.listen(PORT + i, function() {
-    console.log('node ' + i + ' ready to accept');
+    console.log('node '.Aaccept + i + ' ready to accept'.Aaccept);
   });
 
   this.blockchain = new BlockChain(this);
