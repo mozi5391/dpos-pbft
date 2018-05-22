@@ -1,6 +1,18 @@
 var assert = require('assert');
 var protocol = require('./protocol');
 var slots = require('./slots');
+var colors = require('colors');
+
+colors.setTheme({
+    command: 'red',
+    Aaccept: 'grey',
+    Sslot: 'yellow',
+    Ffork: 'blue',
+    Pprepare: 'magenta',
+    Ccommit: 'green',
+
+});
+
 
 var PBFT_N = slots.delegates;
 var PBFT_F = Math.floor((PBFT_N - 1) / 3);
@@ -91,9 +103,9 @@ Pbft.prototype.processMessage = function(msg) {
           !this.prepareInfo.votes[d.signer]) {
         this.prepareInfo.votes[d.signer] = true;
         this.prepareInfo.votesNumber++;
-        console.log('pbft %d prepare votes: %d', this.node.id, this.prepareInfo.votesNumber);
+        console.log('pbft %d prepare votes: %d'.Pprepare, this.node.id, this.prepareInfo.votesNumber);
         if (this.prepareInfo.votesNumber > PBFT_F) {
-          console.log('node %d change state to commit', this.node.id);
+          console.log('node %d change state to commit'.Ccommit, this.node.id);
           this.state = State.Commit;
           var commitInfo = {
             height: this.prepareInfo.height,
@@ -125,7 +137,7 @@ Pbft.prototype.processMessage = function(msg) {
         if (!commit.votes[d.signer]) {
           commit.votes[d.signer] = true;
           commit.votesNumber++;
-          console.log('pbft %d commit votes: %d', this.node.id, commit.votesNumber);
+          console.log('pbft %d commit votes: %d'.Ccommit, this.node.id, commit.votesNumber);
           if (commit.votesNumber > 2 * PBFT_F) {
             this.commit(d.hash);
           }
